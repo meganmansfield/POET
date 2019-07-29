@@ -5,7 +5,7 @@ ncores     4         # Number of processors used (for each aperture!)
 denphot    False     # Use denoised data for photometry?
 
 # Aperture photometry parameters
-photap      0.2      # Photometry aperture radius
+photap      2.5      # Photometry aperture radius
 skyin       7.0      # Inner sky annulus radius
 skyout      15.0     # Outer sky annulus radius
 skyfrac     0.1      # Required sky fraction of good pixels
@@ -19,7 +19,7 @@ dooptimal   False
 otrim       8        # Radius of trimmed box around the target.
 
 # Noise pixel parameter
-isbeta      True   # Photometric extraction aperture scales with noise pixel parameter
+isbeta      False   # Photometric extraction aperture scales with noise pixel parameter
 betahw      1       # Half-width of box size around centroid for beta
 ispsf       False
 
