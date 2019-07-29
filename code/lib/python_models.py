@@ -1163,6 +1163,56 @@ def setupmodel(model, ind):
         myfuncs.append(mc.spiderman_rock)
         saveext.append('spr')
         functype.append('sinusoidal')
+    elif model[i] == 'eigensphere':
+        #DEFINE INDICES
+        ind.t0 = ind.size
+        ind.per = ind.size + 1
+        ind.a_abs = ind.size + 2
+        ind.cosi = ind.size + 3
+        ind.ecc = ind.size + 4
+        ind.w = ind.size + 5
+        ind.rp = ind.size + 6
+        ind.a = ind.size + 7
+        ind.p_u1 = ind.size + 8
+        ind.p_u2 = ind.size + 9
+        ind.T_s = ind.size + 10
+        ind.l1 = ind.size + 11
+        ind.l2 = ind.size + 12
+        ind.degree = ind.size + 13
+        ind.la0 = ind.size + 14
+        ind.lo0 = ind.size + 15
+        ind.npoints = ind.size + 16
+        ind.coeff0 = ind.size + 17
+        ind.coeff1 = ind.size + 18
+        ind.coeff2 = ind.size + 19
+        ind.coeff3 = ind.size + 20
+        ind.size   += 21
+        #DEFINE NAMES
+        parname.insert(ind.t0,  't0')
+        parname.insert(ind.per,  'per')
+        parname.insert(ind.a_abs,  'a_abs')
+        parname.insert(ind.cosi,  'cosi')
+        parname.insert(ind.ecc,  'ecc')
+        parname.insert(ind.w,  'w')
+        parname.insert(ind.rp,  'rp')
+        parname.insert(ind.a,  'a')
+        parname.insert(ind.p_u1,  'p_u1')
+        parname.insert(ind.p_u2,  'p_u2')
+        parname.insert(ind.T_s,  'T_s')
+        parname.insert(ind.l1,  'l1')
+        parname.insert(ind.l2,  'l2')
+        parname.insert(ind.degree, 'degree')
+        parname.insert(ind.la0, 'la0')
+        parname.insert(ind.lo0, 'lo0')
+        parname.insert(ind.npoints,  'npoints')
+        parname.insert(ind.coeff0, 'coeff0')
+        parname.insert(ind.coeff1, 'coeff1')
+        parname.insert(ind.coeff2, 'coeff2')
+        parname.insert(ind.coeff3, 'coeff3')
+        #DEFINE RAMP MODEL
+        myfuncs.append(mc.eigensphere)
+        saveext.append('eigen')
+        functype.append('sinusoidal')
     elif model[i] == 'gp_exp2':
         #DEFINE INDICES
         ind.gpexp2a  = ind.size

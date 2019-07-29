@@ -45,7 +45,7 @@ def spiderman_sph(params, t, etc = []):
   2019-02-24	update interpolation, add to github version 
   TODO          add response function, nlayers to etc
    """
-   p = spiderman.ModelParams(brightness_model =  'spherical', thermal = True, stellar_model = 'blackbody')
+   p = spiderman.ModelParams(brightness_model =  'spherical', stellar_model = 'blackbody')#thermal = True, FINDME: MEGAN REMOVED THIS BECAUSE I COULDN'T GET IT TO WORK
    p.nlayers = 5
 
    p.t0    	    = params[0]

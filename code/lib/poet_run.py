@@ -293,6 +293,11 @@ def p6model(event=None, newdir=True, filedir='..', topdir=None, clip=None, idl=F
                             event[j].fit[i].medianp[event[j].fit[i].i.trq2rprs,1]
                     print('%8.4f %9.7f %8.1f %11s %7.1e %6.3f,%5.3f %4.0f %12s' % 
                          (snr, sdnr, bic, model, numit, ystep, xstep, minnumpts, wavelet), file=printout)
+                if hasattr(event[j].fit[i].i, 'btrprs'):    #FINDME: ADDED BY MEGAN
+                    snr   = event[j].fit[i].bestp  [event[j].fit[i].i.btrprs  ] / \
+                            event[j].fit[i].medianp[event[j].fit[i].i.btrprs,1]
+                    print('%8.4f %9.7f %8.1f %11s %7.1e %6.3f,%5.3f %4.0f %12s' %
+                         (snr, sdnr, bic, model, numit, ystep, xstep, minnumpts, wavelet), file=printout)
                 if hasattr(event[j].fit[i].i,'rprs'):
                     snr   = event[j].fit[i].bestp  [event[j].fit[i].i.rprs  ] / \
                             event[j].fit[i].medianp[event[j].fit[i].i.rprs,1]

@@ -579,19 +579,36 @@ def rmsplot(event, fit, fignum, savefile=None, istitle=True, stderr=None, normfa
     if normfactor == None:
         normfactor = 1e-6
     plt.rcParams.update({'legend.fontsize':11})
-    plt.figure(fignum, figsize=(8,6))
     plt.clf()
+    #plt.figure(fignum, figsize=(8,6))
+    #plt.loglog(fit.binsz, fit.rms/normfactor, color='black', lw=1.5, label='Fit RMS', zorder=3)    # our noise
+    #plt.loglog(fit.binsz, stderr/normfactor, color='red', ls='-', lw=2, label='Std. Err.', zorder=1) # expected noise
+    #plt.xlim(0.1, fit.binsz[-1]*2)
+    #plt.ylim(stderr[-1]/normfactor/2., stderr[0]/normfactor*2.)
+    #plt.xlabel("Bin Size", fontsize=14)
+    #plt.ylabel("RMS (ppm)", fontsize=14)
+    #plt.xticks(size=12)
+    #plt.yticks(size=12)
+    #plt.legend()
+    fig=plt.figure(fignum, figsize=(8,6))   #FINDME MEGAN: Edits to make the RMS plot show a time axis
+    ax1=fig.add_subplot(111)
+    ax2=ax1.twiny()
     if istitle:
         a = plt.suptitle(event.eventname + ' Correlated Noise', size=16)
-    plt.loglog(fit.binsz, fit.rms/normfactor, color='black', lw=1.5, label='Fit RMS', zorder=3)    # our noise
-    plt.loglog(fit.binsz, stderr/normfactor, color='red', ls='-', lw=2, label='Std. Err.', zorder=1) # expected noise
-    plt.xlim(0, fit.binsz[-1]*2)
-    plt.ylim(stderr[-1]/normfactor/2., stderr[0]/normfactor*2.)
-    plt.xlabel("Bin Size", fontsize=14)
-    plt.ylabel("RMS (ppm)", fontsize=14)
-    plt.xticks(size=12)
-    plt.yticks(size=12)
-    plt.legend()
+    ax1.loglog(fit.binsz, fit.rms/normfactor, color='black', lw=1.5, label='Fit RMS', zorder=3)    # our noise
+    ax1.loglog(fit.binsz, stderr/normfactor, color='red', ls='-', lw=2, label='Std. Err.', zorder=1) # expected noise
+    ax1.set_xlim(0.1, fit.binsz[-1]*2)
+    ax1.set_ylim(stderr[-1]/normfactor/2., stderr[0]/normfactor*2.)
+    ax1.set_xlabel("Bin Size", fontsize=14)
+    ax1.set_ylabel("RMS (ppm)", fontsize=14)
+    ax2.set_xlim(ax1.get_xlim())
+    ax2.set_xscale('log')
+    newticks=np.array([0.1,1.,10.,100.,1000.,10000.])
+    ax2.set_xticks(newticks)
+    timerounded=["{0:.2f}".format(i*4.*event.exptime) for i in newticks]  #FINDME MEGAN: hard-coded binsize; will need to change for other phase curves
+    ax2.set_xticklabels(timerounded)
+    ax2.set_xlabel('Time [seconds]')
+    ax1.legend()
     if savefile != None:
         plt.savefig(savefile)
     return

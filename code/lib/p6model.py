@@ -37,6 +37,7 @@ import smoothing
 import correlated_noise as cn
 import plots
 import nasc
+import corner
 from python_models import setupmodel
 
 def rundmc(event, num=0, printout=sys.stdout, isinteractive=True):
@@ -1666,6 +1667,7 @@ def rundmc(event, num=0, printout=sys.stdout, isinteractive=True):
     meanp[:, 1]       = np.copy  (medianp[:, 1])
     
     #NEED TO RESTART FOR LOOP HERE!
+    print(bestp)
     rampp             = np.copy(bestp)
     for j in range(numevents):
         fit[j].medianp    = medianp[numparams[cummodels[j]]:numparams[cummodels[j+1]]]
@@ -1775,11 +1777,13 @@ def rundmc(event, num=0, printout=sys.stdout, isinteractive=True):
             rampp[fit[j].i.rprs + numparams[cummodels[j]]] = 0.0
         if hasattr(fit[j].i, 'rprs2'):
             rampp[fit[j].i.rprs2 + numparams[cummodels[j]]] = 0.0
-        if hasattr(fit[j].i, 'btrprs'):
+        if hasattr(fit[j].i, 'btrprs'):    #FINDME: MEGAN COMMENTED THIS OUT TO MAKE THE EIGENCURVES MODEL WORK. IDK WHAT TO DO WITH IT
+            #megantemp=list([rampp[fit[j].i.btrprs + numparams[cummodels[j]]]])  #THEN I UNCOMMENTED IT AND ADDED SKETCHY THINGS
             rampp[fit[j].i.btrprs + numparams[cummodels[j]]] = 0.0
         if hasattr(fit[j].i, 'berprs'):
             rampp[fit[j].i.berprs + numparams[cummodels[j]]] = 0.0
         k = 0
+        #print(rampp)
         for i in range(cummodels[j],cummodels[j+1]):
             if   functype[i] == 'ortho':
                 pass
@@ -1799,6 +1803,14 @@ def rundmc(event, num=0, printout=sys.stdout, isinteractive=True):
                 fit[j].rampuc *= fit[j].bestgpuc
             #DO NOT REMOVE SINUSOIDAL FUNCTIONS FROM NORMALIZED RESULTS (FOR PHASE CURVES)
             elif functype[i] == 'sinusoidal':
+                #print(iparams[i])
+                #print(rampp[iparams[i]][6]) #FINDME: MEGAN ADDED ALL THIS SKETCHINESS TO GET IT TO WORK
+                #print(megantemp)
+                #newmeganparams=list(rampp[iparams[i]])
+                #newmeganparams[6]=megantemp[0]
+                #rampp[iparams[i]][6]=megantemp[0]
+                #print(newmeganparams)
+                #fit[j].noecl   *= myfuncs[i](newmeganparams, funcx  [i], fit[j].etc[k])
                 fit[j].noecl   *= myfuncs[i](rampp[iparams[i]], funcx  [i], fit[j].etc[k])
             else:
                 fit[j].noecl   *= myfuncs[i](rampp[iparams[i]], funcx  [i], fit[j].etc[k])
@@ -2131,6 +2143,19 @@ def rundmc(event, num=0, printout=sys.stdout, isinteractive=True):
                         a.fontsize=8
             
             plt.savefig(event[j].modeldir + "/" + obj + "-fig" + str(num*numfigs+1608) + "-" + saveext + ".png")
+
+        #PAIRS PLOT - Megan added
+        #update for later - can I include only certain parameters, not all of them?
+    # if allplots>3:
+    #     for j in range(numevents):
+    #         labels=[]
+    #         for num in list(fit[j].ifreepars):
+    #             labels.append(fit[j].parname[num])
+    #         cornerparams=allparams[list(fit[j].ifreepars),:]
+    #         ccornerparams=np.einsum('lk->kl',cornerparams)
+    #         fig=corner.corner(ccornerparams,labels=labels,show_titles=True)
+    #         fig.savefig(event[j].modeldir + "/" + obj + "-pairsplot-" + saveext + ".png")
+
     
     if isinteractive == False:
         plt.close('all')
